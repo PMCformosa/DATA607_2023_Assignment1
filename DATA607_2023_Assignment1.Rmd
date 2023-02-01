@@ -1,0 +1,57 @@
+---
+title: "DATA607_Assignment_1"
+author: "Pei-Ming Chen"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+library(openintro)
+```
+
+### Introduction
+
+Covid 19 pandemic has been with us for almost three years. Millions of people lost their life from COVID virus infecting all over the world. American chose Joe Biden instead of Trump partially because of they wanted a better national policy in facing COVID. This poll data that I choose is about how Americans view Biden's response to the Coronavirus crisis. I would like to find out whether American people approve President Biden on this specific issue.  
+
+You can read more here https://projects.fivethirtyeight.com/coronavirus-polls/
+
+```{r rename_column }
+mydata <- data.frame(read.csv("https://raw.githubusercontent.com/PMCformosa/DATA607_2023_Assignment1/main/president_approval_polls.csv", header = TRUE))
+
+dim(mydata)
+```
+
+### Rename Column
+Two headers of the table were re-phrase in a much easier understood one
+
+```{r }
+head(mydata)
+mydata <- rename(mydata, c("pollster_comp" = "pollster", "poll_idnumber" = "poll_id"))
+
+```
+
+### Remove columns
+The columns with header :partisan , source ,and notes do not have any data in. Thus, I remove them to have a cleaner data frame. 
+
+```{r}
+poll_df <- mydata %>% select(-c(partisan, source, notes))
+head(poll_df)
+```
+
+
+### What is the poll result of President Joe Biden approval rate ?
+The data below showed that 634 pollisters have the approval result, while 1211 pollisters have the disapproval result. 
+
+```{r}
+library(knitr)
+Approval <- subset(poll_df, yes > 50)
+Disapproval <- subset(poll_df, no < 50)
+Approval
+Disapproval
+```
+
+
+### Conclusion
+
+Obviously the approval rate of President Biden is not that ideal yet in dealing with COVID. Its much clear to read the poll data using R. Hopefully I will be able to do some analysis of 2024 President election data when the President election is taking place. 
